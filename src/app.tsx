@@ -3,19 +3,27 @@ import { BulletRenderer } from './components/bullet-renderer';
 import { CameraRenderer } from './components/camera-renderer';
 import { EnemyRenderer } from './components/enemy-renderer';
 import { ExplosionRenderer } from './components/explosion-renderer';
+import { GameOverText } from './components/game-over';
 import { PlayerRenderer } from './components/player-renderer';
 import { ScoreTracker } from './components/score-tracker';
 import { FrameLoop } from './frameloop';
 import { Startup } from './startup';
 import { Stars } from '@react-three/drei';
+import { PostProcessing } from './components/postprcoessing';
 
 export function App() {
 	return (
 		<>
 			<ScoreTracker />
+			<GameOverText />
 
 			<Canvas>
-				<Startup autoAimSpeed={500} initialEnemies={20} spawnRate={3000} initialCameraPosition={[0, 0, 56]} />
+				<Startup
+					autoAimSpeed={100}
+					initialEnemies={100}
+					spawnRate={1000}
+					initialCameraPosition={[0, 0, 56]}
+				/>
 				<FrameLoop />
 
 				<CameraRenderer />
@@ -29,6 +37,7 @@ export function App() {
 				<directionalLight position={[10.55754, 5.89323, 9.99894]} intensity={4.88} color={'#ffffff'} />
 
 				<Stars factor={10} radius={200} fade={false} />
+				<PostProcessing />
 			</Canvas>
 		</>
 	);

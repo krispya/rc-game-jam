@@ -2,8 +2,8 @@ import { useFrame } from '@react-three/fiber';
 import { useRef } from 'react';
 import * as THREE from 'three';
 
-// const color = new THREE.Color(1, 0.5, 0).multiplyScalar(40);
-const color = new THREE.Color(1, 0.5, 0);
+const color = new THREE.Color(1, 0.5, 0).multiplyScalar(40);
+// const color = new THREE.Color(1, 0.5, 0);
 
 export function ThrusterView({ position }: { position: [number, number, number] }) {
 	const meshRef = useRef<THREE.Mesh>(null);
