@@ -1,4 +1,4 @@
-import { createActions } from 'koota';
+import { createActions, World } from 'koota';
 import * as THREE from 'three';
 import { Avoidant, Bullet, IsEnemy, Input, Movement, IsPlayer, Transform, Health, MaxSpeed } from './traits';
 import { between } from './utils/between';
@@ -7,8 +7,8 @@ import { FollowPlayer } from './traits/followPlayer';
 export const actions = createActions((world) => ({
 	spawnPlayer: () => world.spawn(IsPlayer, Transform, Input, Movement, Health({ amount: 100 })),
 	spawnEnemy: () => {
-		const r = between(0, 2)
-		if(r < 1) {
+		const r = between(0, 2);
+		if (r < 1) {
 			// console.log("slow")
 			spawnSlowEnemy(world);
 		} else {
@@ -31,7 +31,7 @@ export const actions = createActions((world) => ({
 	},
 }));
 
-const spawnSlowEnemy = (world) => {
+const spawnSlowEnemy = (world: World) => {
 	// Create a random position and rotation
 	const position = new THREE.Vector3(between(-50, 50), between(-50, 50), 0);
 	const rotation = new THREE.Euler(0, between(0, Math.PI * 2), 0);
@@ -45,9 +45,9 @@ const spawnSlowEnemy = (world) => {
 		FollowPlayer,
 		MaxSpeed({ maxSpeed: 3 })
 	);
-}
+};
 
-const spawnFastEnemy = (world) => {
+const spawnFastEnemy = (world: World) => {
 	// Create a random position and rotation
 	const position = new THREE.Vector3(between(-50, 50), between(-50, 50), 0);
 	const rotation = new THREE.Euler(0, between(0, Math.PI * 2), 0);
@@ -56,9 +56,9 @@ const spawnFastEnemy = (world) => {
 	world.spawn(
 		IsEnemy,
 		Transform({ position, rotation }),
-		Movement({ thrust: .15, damping: 1 }),
+		Movement({ thrust: 0.15, damping: 1 }),
 		Avoidant,
 		FollowPlayer,
 		MaxSpeed({ maxSpeed: 10 })
 	);
-}
+};

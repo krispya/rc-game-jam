@@ -2,13 +2,12 @@ import { Canvas } from '@react-three/fiber';
 import { BulletRenderer } from './components/bullet-renderer';
 import { EnemyRenderer } from './components/enemy-renderer';
 import { ExplosionRenderer } from './components/explosion-renderer';
+import { GameOverText } from './components/game-over';
 import { Nebula } from './components/nebula';
 import { PlayerRenderer } from './components/player-renderer';
 import { HifiScoreTracker } from './components/score-tracker';
-import { GameOverText } from './components/game-over';
 import { FrameLoop } from './frameloop';
 import { Startup } from './startup';
-import React from 'react';
 
 export function App() {
 	return (
