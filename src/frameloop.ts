@@ -12,7 +12,9 @@ import { tickExplosion } from './systems/tick-explosion';
 import { avoidEachother } from './systems/update-avoidance';
 import { updateBullets } from './systems/update-bullet';
 import { collideBulletsWithEnemies } from './systems/update-bullet-collisions';
+
 import { updateTime } from './systems/update-time';
+import { limitSpeed } from './systems/limit-speed';
 
 export function FrameLoop() {
 	const world = useWorld();
@@ -32,6 +34,7 @@ export function FrameLoop() {
 		pushEnemies(world);
 		applyForce(world);
 		moveEntities(world);
+		limitSpeed(world);
 
 		// Shooting
 		handleShooting(world);

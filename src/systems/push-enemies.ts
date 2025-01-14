@@ -1,6 +1,6 @@
 import { Entity, World } from 'koota';
 import * as THREE from 'three';
-import { IsEnemy, Movement, IsPlayer, SpatialHashMap, Transform } from '../traits';
+import { IsEnemy, Movement, IsPlayer, SpatialHashMap, Transform, Health } from '../traits';
 
 const collisionRadius = 2.1;
 const pushStrength = 0.08;
@@ -9,7 +9,7 @@ const pushForce = new THREE.Vector3();
 export function pushEnemies(world: World) {
 	const spatialHashMap = world.get(SpatialHashMap)!;
 
-	world.query(IsPlayer, Transform, Movement).updateEach(([{ position }, { velocity }]) => {
+	world.query(IsPlayer, Transform, Movement, Health).updateEach(([{ position }, { velocity }, Health ]) => {
 		// Get nearby entities
 		const nearbyEntities = spatialHashMap.getNearbyEntities(
 			position.x,
@@ -33,10 +33,13 @@ export function pushEnemies(world: World) {
 				.copy(enemyTransform.position)
 				.sub(position)
 				.normalize()
-				.multiplyScalar(velocity.length() * pushStrength);
+				.multiplyScalar(20);
 
 			// Apply push force to enemy
-			enemyMovement.force.add(pushForce);
+			Health.amount -= 1;
+			// console.log(Health.amount)
+			enemyMovement.velocity.set(pushForce.x, pushForce.y, pushForce.z);
+			// enemyMovement.force.add(pushForce);
 		}
 	});
 }

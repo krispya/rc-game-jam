@@ -9,3 +9,6 @@ export * from './explosion';
 export * from './spatial-hash-map';
 export * from './time';
 export * from './view';
+export * from './health'
+export * from './followPlayer';
+export * from './maxSpeed';
