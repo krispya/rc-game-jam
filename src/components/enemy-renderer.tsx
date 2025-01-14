@@ -1,29 +1,23 @@
 import { useFrame } from '@react-three/fiber';
 import { Entity } from 'koota';
 import { useQuery } from 'koota/react';
-import { useLayoutEffect, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import * as THREE from 'three';
-import { IsEnemy, Transform } from '../traits';
+import { IsEnemy, Transform, View } from '../traits';
 
 export function EnemyView({ entity }: { entity: Entity }) {
-	const ref = useRef<THREE.Mesh>(null!);
-
-	useLayoutEffect(() => {
-		const transform = entity.get(Transform)!;
-		ref.current.position.copy(transform.position);
-		ref.current.rotation.copy(transform.rotation);
-		ref.current.scale.copy(transform.scale);
-
-		// Sync traits from mesh
-		entity.set(Transform, {
-			position: ref.current.position,
-			rotation: ref.current.rotation,
-			scale: ref.current.scale,
-		});
-	}, [entity]);
+	// A ref callback is used so that it runs before effects
+	const setInitial = useCallback(
+		(mesh: THREE.Mesh | null) => {
+			// If the ref is null then it is being unmounted
+			if (!mesh) return;
+			entity.add(View(mesh));
+		},
+		[entity]
+	);
 
 	return (
-		<mesh ref={ref}>
+		<mesh ref={setInitial}>
 			<dodecahedronGeometry />
 			<meshBasicMaterial color="white" wireframe />
 		</mesh>
@@ -31,35 +25,34 @@ export function EnemyView({ entity }: { entity: Entity }) {
 }
 
 function HifiEnemyView({ entity }: { entity: Entity }) {
-	const ref = useRef<THREE.Mesh>(null!);
 	const scaleRef = useRef(0);
 
-	useLayoutEffect(() => {
-		const transform = entity.get(Transform)!;
-		ref.current.position.copy(transform.position);
-		ref.current.rotation.copy(transform.rotation);
-		ref.current.scale.copy(transform.scale);
-
-		// Sync traits from mesh
-		entity.set(Transform, {
-			position: ref.current.position,
-			rotation: ref.current.rotation,
-			scale: ref.current.scale,
-		});
-	}, [entity]);
+	// A ref callback is used so that it runs before effects
+	const setInitial = useCallback(
+		(mesh: THREE.Mesh | null) => {
+			// If the ref is null then it is being unmounted
+			if (!mesh) return;
+			entity.add(View(mesh));
+			// Set initial scale to 0
+			entity.set(Transform, { scale: new THREE.Vector3(0, 0, 0) });
+		},
+		[entity]
+	);
 
 	// Scale into existence
 	useFrame((_, delta) => {
-		if (!ref.current) return;
 		const progress = Math.min(scaleRef.current + delta * 2, 1);
 		// Apply easing - this uses cubic easing out
 		const eased = 1 - Math.pow(1 - progress, 3);
 		scaleRef.current = progress;
-		ref.current.scale.setScalar(eased);
+		// Update the transform trait
+		entity.set(Transform, (prev) => {
+			return { ...prev, scale: prev.scale.setScalar(eased) };
+		});
 	});
 
 	return (
-		<mesh ref={ref}>
+		<mesh ref={setInitial}>
 			<dodecahedronGeometry />
 			<meshStandardMaterial color="white" metalness={0.5} roughness={0.25} />
 		</mesh>

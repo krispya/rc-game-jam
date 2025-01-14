@@ -1,52 +1,41 @@
 import { Entity } from 'koota';
 import { useQuery } from 'koota/react';
-import { useLayoutEffect, useRef } from 'react';
+import { useCallback } from 'react';
 import * as THREE from 'three';
-import { Bullet, Transform } from '../traits';
+import { Bullet, Transform, View } from '../traits';
 
 export function BulletView({ entity }: { entity: Entity }) {
-	const ref = useRef<THREE.Mesh>(null!);
-
-	useLayoutEffect(() => {
-		// Copy current position
-		const transform = entity.get(Transform)!;
-		ref.current.position.copy(transform.position);
-		ref.current.rotation.copy(transform.rotation);
-
-		entity.set(Transform, {
-			position: ref.current.position,
-			rotation: ref.current.rotation,
-			scale: ref.current.scale,
-		});
-	}, [entity]);
+	const setInitial = useCallback(
+		(group: THREE.Group | null) => {
+			if (!group) return;
+			entity.add(View(group));
+		},
+		[entity]
+	);
 
 	return (
-		<mesh ref={ref} scale={0.2}>
-			<sphereGeometry />
-			<meshBasicMaterial color="red" wireframe />
-		</mesh>
+		<group ref={setInitial}>
+			<mesh scale={0.2}>
+				<sphereGeometry />
+				<meshBasicMaterial color="red" wireframe />
+			</mesh>
+		</group>
 	);
 }
 
 const bulletColor = new THREE.Color('green').multiplyScalar(40);
 
 function HifiBulletView({ entity }: { entity: Entity }) {
-	const ref = useRef<THREE.Group>(null!);
-
-	useLayoutEffect(() => {
-		// Copy current position
-		ref.current.position.copy(entity.get(Transform)!.position);
-		ref.current.rotation.copy(entity.get(Transform)!.rotation);
-
-		entity.set(Transform, {
-			position: ref.current.position,
-			rotation: ref.current.rotation,
-			scale: ref.current.scale,
-		});
-	}, [entity]);
+	const setInitial = useCallback(
+		(group: THREE.Group | null) => {
+			if (!group) return;
+			entity.add(View(group));
+		},
+		[entity]
+	);
 
 	return (
-		<group ref={ref}>
+		<group ref={setInitial}>
 			<mesh scale={0.4} rotation-z={Math.PI / 2}>
 				<capsuleGeometry args={[0.5, 1.5, 4, 4]} />
 				<meshBasicMaterial color={bulletColor} />

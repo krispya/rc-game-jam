@@ -1,33 +1,32 @@
 import { useFrame } from '@react-three/fiber';
 import { Entity } from 'koota';
 import { useQuery } from 'koota/react';
-import { useLayoutEffect, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import * as THREE from 'three';
-import { Explosion, Transform } from '../traits';
+import { Explosion, Transform, View } from '../traits';
 
 export function ExplosionView({ entity }: { entity: Entity }) {
-	const groupRef = useRef<THREE.Group>(null);
+	const groupRef = useRef<THREE.Group>(null!);
 	const particleCount = entity.get(Explosion)!.count;
 
-	useLayoutEffect(() => {
-		if (!groupRef.current) return;
+	const setInitial = useCallback(
+		(group: THREE.Group | null) => {
+			if (!group) return;
+			entity.add(View(group));
 
-		// Position the explosion group
-		groupRef.current.position.copy(entity.get(Transform)!.position);
+			// Set particle velocities with random offset
+			const velocities = entity.get(Explosion)!.velocities;
+			const randomOffset = Math.random() * Math.PI * 2; // Random starting angle
 
-		// Set particle velocities with random offset
-		const velocities = entity.get(Explosion)!.velocities;
-		const randomOffset = Math.random() * Math.PI * 2; // Random starting angle
+			for (let i = 0; i < particleCount; i++) {
+				const angle = randomOffset + (i / particleCount) * Math.PI * 2;
+				velocities.push(new THREE.Vector3(Math.cos(angle), Math.sin(angle), 0));
+			}
 
-		for (let i = 0; i < particleCount; i++) {
-			const angle = randomOffset + (i / particleCount) * Math.PI * 2;
-			velocities.push(new THREE.Vector3(Math.cos(angle), Math.sin(angle), 0));
-		}
-
-		return () => {
-			velocities.length = 0;
-		};
-	}, [entity, particleCount]);
+			groupRef.current = group;
+		},
+		[entity, particleCount]
+	);
 
 	useFrame((_, delta) => {
 		if (!groupRef.current) return;
@@ -54,7 +53,7 @@ export function ExplosionView({ entity }: { entity: Entity }) {
 	});
 
 	return (
-		<group ref={groupRef}>
+		<group ref={setInitial}>
 			{Array.from({ length: particleCount }).map((_, i) => {
 				return (
 					<mesh key={i}>
