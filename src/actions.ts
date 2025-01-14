@@ -1,6 +1,6 @@
 import { createActions } from 'koota';
 import * as THREE from 'three';
-import { Avoidant, Bullet, IsEnemy, Input, Movement, IsPlayer, Transform } from './traits';
+import { Avoidant, Bullet, IsEnemy, Input, Movement, IsPlayer, Transform, IsCamera } from './traits';
 import { between } from './utils/between';
 
 export const actions = createActions((world) => ({
@@ -25,5 +25,8 @@ export const actions = createActions((world) => ({
 			}),
 			Bullet({ direction })
 		);
+	},
+	spawnCamera: (position: [number, number, number]) => {
+		return world.spawn(Transform({ position: new THREE.Vector3(...position) }), IsCamera);
 	},
 }));

@@ -8,13 +8,19 @@ import { Movement } from './traits';
 export function Startup({
 	initialEnemies = 20,
 	spawnRate = 3000,
+	initialCameraPosition = [0, 0, 50],
 }: {
 	initialEnemies?: number;
 	spawnRate?: number;
+	initialCameraPosition?: [number, number, number];
 }) {
-	const { spawnPlayer, spawnEnemy } = useActions(actions);
+	const { spawnPlayer, spawnEnemy, spawnCamera } = useActions(actions);
 
 	useEffect(() => {
+		// Spawn camera
+		spawnCamera(initialCameraPosition);
+
+		// Spawn player
 		const player = spawnPlayer();
 		player.set(Movement, { thrust: 2 });
 
@@ -29,7 +35,7 @@ export function Startup({
 			player.destroy();
 			clearInterval(enemySpawnInterval);
 		};
-	}, [spawnPlayer, spawnEnemy, spawnRate, initialEnemies]);
+	}, [spawnPlayer, spawnEnemy, spawnRate, initialEnemies, spawnCamera, initialCameraPosition]);
 
 	const world = useWorld();
 

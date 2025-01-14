@@ -8,4 +8,5 @@ export * from './avoidant';
 export * from './explosion';
 export * from './spatial-hash-map';
 export * from './time';
-export * from './view';
+export * from './ref';
+export * from './is-camera';

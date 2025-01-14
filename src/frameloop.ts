@@ -2,7 +2,7 @@ import { useFrame } from '@react-three/fiber';
 import { useWorld } from 'koota/react';
 import { applyForce } from './systems/apply-force';
 import { convertInputToMovement } from './systems/apply-input';
-import { flockToPlayer } from './systems/follow-player';
+import { flockEnemyToPlayer } from './systems/flock-enemy-to-player';
 import { handleShooting } from './systems/handle-shooting';
 import { moveEntities } from './systems/move-entities';
 import { pollInput } from './systems/poll-input';
@@ -13,19 +13,22 @@ import { avoidEachother } from './systems/update-avoidance';
 import { updateBullets } from './systems/update-bullet';
 import { collideBulletsWithEnemies } from './systems/update-bullet-collisions';
 import { updateTime } from './systems/update-time';
+import { cameraFollowPlayer } from './systems/camera-follow-player';
 
 export function FrameLoop() {
 	const world = useWorld();
 
 	useFrame(() => {
+		// Start
 		updateTime(world);
+		// syncInitialViewTransform(world);
 
 		// Input
 		pollInput(world);
 		convertInputToMovement(world);
 
 		// Enemy AI
-		flockToPlayer(world);
+		flockEnemyToPlayer(world);
 		avoidEachother(world);
 
 		// Movement
@@ -41,7 +44,8 @@ export function FrameLoop() {
 		// Explosions
 		tickExplosion(world);
 
-		// View
+		// Syncing
+		cameraFollowPlayer(world);
 		syncView(world);
 	});
 

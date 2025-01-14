@@ -3,7 +3,7 @@ import { Entity } from 'koota';
 import { useQuery } from 'koota/react';
 import { useCallback, useRef } from 'react';
 import * as THREE from 'three';
-import { IsEnemy, Transform, View } from '../traits';
+import { IsEnemy, Transform, Ref } from '../traits';
 
 export function EnemyView({ entity }: { entity: Entity }) {
 	// A ref callback is used so that it runs before effects
@@ -11,7 +11,7 @@ export function EnemyView({ entity }: { entity: Entity }) {
 		(mesh: THREE.Mesh | null) => {
 			// If the ref is null then it is being unmounted
 			if (!mesh) return;
-			entity.add(View(mesh));
+			entity.add(Ref(mesh));
 		},
 		[entity]
 	);
@@ -32,7 +32,7 @@ function HifiEnemyView({ entity }: { entity: Entity }) {
 		(mesh: THREE.Mesh | null) => {
 			// If the ref is null then it is being unmounted
 			if (!mesh) return;
-			entity.add(View(mesh));
+			entity.add(Ref(mesh));
 			// Set initial scale to 0
 			entity.set(Transform, { scale: new THREE.Vector3(0, 0, 0) });
 		},
