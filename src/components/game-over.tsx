@@ -10,7 +10,6 @@ export function GameOverText() {
 	useEffect(() => {
 		const unsub = world.onChange(Health, (player) => {
 			const playerHealth = player.get(Health);
-			console.log(playerHealth);
 			if (playerHealth && playerHealth.amount <= 0) {
 				world.query(Transform).updateEach((_, entity) => {
 					entity.destroy();
