@@ -1,5 +1,5 @@
 import { World } from 'koota';
-import { Bullet, Enemy, Explosion, SpatialHashMap, Transform } from '../traits';
+import { Bullet, IsEnemy, Explosion, SpatialHashMap, Transform } from '../traits';
 import { between } from '../utils/between';
 
 export const collideBulletsWithEnemies = (world: World) => {
@@ -12,7 +12,7 @@ export const collideBulletsWithEnemies = (world: World) => {
 			const nearbyEntities = spatialHashMap.getNearbyEntities(position.x, position.y, position.z, 2);
 
 			const hitEnemy = nearbyEntities.find(
-				(entity) => entity.has(Enemy) && entity.get(Transform)!.position.distanceTo(position) < 1
+				(entity) => entity.has(IsEnemy) && entity.get(Transform)!.position.distanceTo(position) < 1
 			);
 
 			if (hitEnemy !== undefined) {

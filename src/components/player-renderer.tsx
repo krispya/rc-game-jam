@@ -4,7 +4,7 @@ import { useQueryFirst, useTraitEffect } from 'koota/react';
 import { useLayoutEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import src from '../assets/spacecraft.glb?url';
-import { Input, Player, Transform } from '../traits';
+import { Input, IsPlayer, Transform } from '../traits';
 import { ThrusterView } from './thruster-view';
 
 // Position is now driven by Koota
@@ -64,6 +64,6 @@ export function HifiPlayerView({ entity }: { entity: Entity }) {
 
 // Query for the first player entity and render it
 export function PlayerRenderer() {
-	const player = useQueryFirst(Player, Transform);
+	const player = useQueryFirst(IsPlayer, Transform);
 	return player ? <HifiPlayerView entity={player} /> : null;
 }

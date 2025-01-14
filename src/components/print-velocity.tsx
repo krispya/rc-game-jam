@@ -2,7 +2,7 @@ import { Html } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { useWorld } from 'koota/react';
 import { useRef } from 'react';
-import { Movement, Player } from '../traits';
+import { Movement, IsPlayer } from '../traits';
 
 export function PrintVelocity() {
 	const ref = useRef<HTMLDivElement>(null!);
@@ -10,7 +10,7 @@ export function PrintVelocity() {
 
 	useFrame(() => {
 		if (!ref.current) return;
-		const player = world.queryFirst(Player);
+		const player = world.queryFirst(IsPlayer);
 		if (!player) return;
 
 		const { velocity } = player.get(Movement)!;

@@ -1,6 +1,6 @@
 import { World } from 'koota';
 import { actions } from '../actions';
-import { Player, Time, Transform } from '../traits';
+import { IsPlayer, Time, Transform } from '../traits';
 
 let canShoot = true;
 const SHOOT_COOLDOWN = 0.15; // seconds
@@ -38,7 +38,7 @@ export const handleShooting = (world: World) => {
 
 	// Check for shooting input
 	if (keys.space && canShoot) {
-		const player = world.queryFirst(Player, Transform);
+		const player = world.queryFirst(IsPlayer, Transform);
 		if (player) {
 			const playerTransform = player.get(Transform)!;
 			spawnBullet(playerTransform.position, playerTransform.rotation);

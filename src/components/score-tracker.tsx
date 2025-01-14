@@ -2,7 +2,7 @@ import '@fontsource/russo-one';
 import { Html } from '@react-three/drei';
 import { useWorld } from 'koota/react';
 import { useEffect, useState } from 'react';
-import { Enemy } from '../traits';
+import { IsEnemy } from '../traits';
 import { AnimatedCounter } from 'react-animated-counter';
 
 export function ScoreTracker() {
@@ -10,7 +10,7 @@ export function ScoreTracker() {
 	const [score, setScore] = useState(0);
 
 	useEffect(() => {
-		const unsub = world.onRemove([Enemy], () => {
+		const unsub = world.onRemove([IsEnemy], () => {
 			setScore((v) => v + 1);
 		});
 
@@ -40,7 +40,7 @@ export function HifiScoreTracker() {
 	const [score, setScore] = useState(99999);
 
 	useEffect(() => {
-		const unsub = world.onRemove([Enemy], () => {
+		const unsub = world.onRemove([IsEnemy], () => {
 			setScore((v) => v + 1);
 		});
 

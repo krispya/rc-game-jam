@@ -1,6 +1,6 @@
 import { Entity, World } from 'koota';
 import * as THREE from 'three';
-import { Enemy, Movement, Player, SpatialHashMap, Transform } from '../traits';
+import { IsEnemy, Movement, IsPlayer, SpatialHashMap, Transform } from '../traits';
 
 const collisionRadius = 2.1;
 const pushStrength = 0.08;
@@ -9,7 +9,7 @@ const pushForce = new THREE.Vector3();
 export function pushEnemies(world: World) {
 	const spatialHashMap = world.get(SpatialHashMap)!;
 
-	world.query(Player, Transform, Movement).updateEach(([{ position }, { velocity }]) => {
+	world.query(IsPlayer, Transform, Movement).updateEach(([{ position }, { velocity }]) => {
 		// Get nearby entities
 		const nearbyEntities = spatialHashMap.getNearbyEntities(
 			position.x,
@@ -20,7 +20,7 @@ export function pushEnemies(world: World) {
 
 		// Filter for enemies within collision range
 		const collidingEnemies: Entity[] = nearbyEntities.filter((entity) => {
-			return entity.has(Enemy) && entity.get(Transform)!.position.distanceTo(position) <= collisionRadius;
+			return entity.has(IsEnemy) && entity.get(Transform)!.position.distanceTo(position) <= collisionRadius;
 		});
 
 		// Apply push force to colliding enemies

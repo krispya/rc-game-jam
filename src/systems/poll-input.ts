@@ -1,7 +1,7 @@
 // Track key states.
 
 import { World } from 'koota';
-import { Input, Player } from '../traits';
+import { Input, IsPlayer } from '../traits';
 
 const keys = {
 	arrowUp: false,
@@ -65,7 +65,7 @@ window.addEventListener('keyup', (e) => {
 });
 
 export function pollInput(world: World) {
-	world.query(Player, Input).updateEach(([input]) => {
+	world.query(IsPlayer, Input).updateEach(([input]) => {
 		// Get horizontal and vertical input.
 		const horizontal = (keys.arrowRight || keys.d ? 1 : 0) - (keys.arrowLeft || keys.a ? 1 : 0);
 		const vertical = (keys.arrowUp || keys.w ? 1 : 0) - (keys.arrowDown || keys.s ? 1 : 0);
