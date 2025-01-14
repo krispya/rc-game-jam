@@ -10,3 +10,5 @@ export * from './spatial-hash-map';
 export * from './time';
 export * from './ref';
 export * from './is-camera';
+export * from './auto-aim';
+export * from './shoot-at';

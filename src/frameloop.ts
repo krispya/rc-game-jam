@@ -14,6 +14,8 @@ import { updateBullets } from './systems/update-bullet';
 import { collideBulletsWithEnemies } from './systems/update-bullet-collisions';
 import { updateTime } from './systems/update-time';
 import { cameraFollowPlayer } from './systems/camera-follow-player';
+import { updateAutoAim } from './systems/update-auto-aim';
+import { updateAutoShoot } from './systems/update-auto-shoot';
 
 export function FrameLoop() {
 	const world = useWorld();
@@ -37,6 +39,8 @@ export function FrameLoop() {
 		moveEntities(world);
 
 		// Shooting
+		updateAutoAim(world);
+		updateAutoShoot(world);
 		handleShooting(world);
 		updateBullets(world);
 		collideBulletsWithEnemies(world);

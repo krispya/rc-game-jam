@@ -1,10 +1,10 @@
 import { createActions } from 'koota';
 import * as THREE from 'three';
-import { Avoidant, Bullet, IsEnemy, Input, Movement, IsPlayer, Transform, IsCamera } from './traits';
+import { Avoidant, Bullet, IsEnemy, Input, Movement, IsPlayer, Transform, IsCamera, AutoAim } from './traits';
 import { between } from './utils/between';
 
 export const actions = createActions((world) => ({
-	spawnPlayer: () => world.spawn(IsPlayer, Transform, Input, Movement),
+	spawnPlayer: () => world.spawn(IsPlayer, Transform, Input, Movement, AutoAim),
 	spawnEnemy: () => {
 		// Create a random position and rotation
 		const position = new THREE.Vector3(between(-50, 50), between(-50, 50), 0);
@@ -13,10 +13,12 @@ export const actions = createActions((world) => ({
 		// Spawn the enemy
 		world.spawn(IsEnemy, Transform({ position, rotation }), Movement, Avoidant);
 	},
-	spawnBullet: (position: THREE.Vector3, rotation: THREE.Euler) => {
-		// Create a forward vector and apply the rotation to get the bullet direction
-		const direction = new THREE.Vector3(1, 0, 0);
-		direction.applyEuler(rotation);
+	spawnBullet: (position: THREE.Vector3, rotation: THREE.Euler, direction?: THREE.Vector3) => {
+		if (!direction) {
+			// Create a forward vector and apply the rotation to get the bullet direction
+			direction = new THREE.Vector3(1, 0, 0);
+			direction.applyEuler(rotation);
+		}
 
 		return world.spawn(
 			Transform({

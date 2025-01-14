@@ -15,7 +15,7 @@ export function App() {
 			<ScoreTracker />
 
 			<Canvas>
-				<Startup initialEnemies={20} spawnRate={3000} initialCameraPosition={[0, 0, 56]} />
+				<Startup autoAimSpeed={500} initialEnemies={20} spawnRate={3000} initialCameraPosition={[0, 0, 56]} />
 				<FrameLoop />
 
 				<CameraRenderer />
