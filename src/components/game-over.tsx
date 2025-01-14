@@ -1,7 +1,7 @@
 import '@fontsource/russo-one';
 import { useWorld } from 'koota/react';
 import { useEffect, useState } from 'react';
-import { Health } from '../traits';
+import { Health, Transform } from '../traits';
 
 export function GameOverText() {
 	const world = useWorld();
@@ -10,8 +10,11 @@ export function GameOverText() {
 	useEffect(() => {
 		const unsub = world.onChange(Health, (player) => {
 			const playerHealth = player.get(Health);
-			if (playerHealth) {
-				setGameOver(playerHealth.amount <= 0);
+			if (playerHealth && playerHealth.amount <= 0) {
+				world.query(Transform).updateEach((_, entity) => {
+					entity.destroy();
+				});
+				setGameOver(true);
 			}
 		});
 		return () => {
