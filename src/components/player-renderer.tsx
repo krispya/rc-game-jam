@@ -4,14 +4,14 @@ import { useQueryFirst, useTraitEffect } from 'koota/react';
 import { useCallback, useLayoutEffect, useState } from 'react';
 import * as THREE from 'three';
 import src from '../assets/spacecraft.glb?url';
-import { Input, IsPlayer, Transform, View } from '../traits';
+import { Input, IsPlayer, Transform, Ref } from '../traits';
 import { ThrusterView } from './thruster-view';
 
 export function PlayerView({ entity }: { entity: Entity }) {
 	// A ref callback is used so that it runs before effects
 	const setInitial = useCallback(
 		(mesh: THREE.Mesh) => {
-			entity.add(View(mesh));
+			entity.add(Ref(mesh));
 			entity.set(Transform, {
 				position: mesh.position,
 				rotation: mesh.rotation,
@@ -50,7 +50,7 @@ export function HifiPlayerView({ entity }: { entity: Entity }) {
 		(group: THREE.Group | null) => {
 			// If the ref is null then it is being unmounted
 			if (!group) return;
-			entity.add(View(group));
+			entity.add(Ref(group));
 		},
 		[entity]
 	);

@@ -3,9 +3,10 @@ import * as THREE from 'three';
 import { Avoidant, Bullet, IsEnemy, Input, Movement, IsPlayer, Transform, Health, MaxSpeed } from './traits';
 import { between } from './utils/between';
 import { FollowPlayer } from './traits/followPlayer';
+import { AutoAim } from './traits/auto-aim';
 
 export const actions = createActions((world) => ({
-	spawnPlayer: () => world.spawn(IsPlayer, Transform, Input, Movement, Health({ amount: 100 })),
+	spawnPlayer: () => world.spawn(IsPlayer, Transform, Input, Movement, AutoAim, Health({ amount: 100 })),
 	spawnEnemy: () => {
 		const r = between(0, 2);
 		if (r < 1) {
@@ -16,10 +17,12 @@ export const actions = createActions((world) => ({
 			// console.log("fast")
 		}
 	},
-	spawnBullet: (position: THREE.Vector3, rotation: THREE.Euler) => {
-		// Create a forward vector and apply the rotation to get the bullet direction
-		const direction = new THREE.Vector3(1, 0, 0);
-		direction.applyEuler(rotation);
+	spawnBullet: (position: THREE.Vector3, rotation: THREE.Euler, direction?: THREE.Vector3) => {
+		if (!direction) {
+			// Create a forward vector and apply the rotation to get the bullet direction
+			direction = new THREE.Vector3(1, 0, 0);
+			direction.applyEuler(rotation);
+		}
 
 		return world.spawn(
 			Transform({
@@ -28,6 +31,9 @@ export const actions = createActions((world) => ({
 			}),
 			Bullet({ direction })
 		);
+	},
+	spawnCamera: (position: [number, number, number]) => {
+		return world.spawn(Transform({ position: new THREE.Vector3(...position) }), IsCamera);
 	},
 }));
 
