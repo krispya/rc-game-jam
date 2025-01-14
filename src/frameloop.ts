@@ -24,7 +24,6 @@ export function FrameLoop() {
 	useFrame(() => {
 		// Start
 		updateTime(world);
-		// syncInitialViewTransform(world);
 
 		// Input
 		pollInput(world);

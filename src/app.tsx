@@ -18,7 +18,12 @@ export function App() {
 			<GameOverText />
 
 			<Canvas>
-				<Startup autoAimSpeed={500} initialEnemies={20} spawnRate={3000} initialCameraPosition={[0, 0, 56]} />
+				<Startup
+					autoAimSpeed={100}
+					initialEnemies={100}
+					spawnRate={1000}
+					initialCameraPosition={[0, 0, 56]}
+				/>
 				<FrameLoop />
 
 				<CameraRenderer />
