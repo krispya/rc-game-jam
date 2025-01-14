@@ -1,6 +1,17 @@
 import { createActions, World } from 'koota';
 import * as THREE from 'three';
-import { Avoidant, Bullet, IsEnemy, Input, Movement, IsPlayer, Transform, Health, MaxSpeed } from './traits';
+import {
+	Avoidant,
+	Bullet,
+	IsEnemy,
+	Input,
+	Movement,
+	IsPlayer,
+	Transform,
+	Health,
+	MaxSpeed,
+	IsCamera,
+} from './traits';
 import { between } from './utils/between';
 import { FollowPlayer } from './traits/followPlayer';
 import { AutoAim } from './traits/auto-aim';

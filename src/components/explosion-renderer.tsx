@@ -5,8 +5,8 @@ import { useCallback, useRef } from 'react';
 import * as THREE from 'three';
 import { Explosion, Transform, Ref } from '../traits';
 
-// const color = new THREE.Color(1, 0.5, 0).multiplyScalar(40)
-const color = new THREE.Color(1, 0.5, 0);
+const color = new THREE.Color(1, 0.5, 0).multiplyScalar(40);
+// const color = new THREE.Color(1, 0.5, 0);
 
 export function ExplosionView({ entity }: { entity: Entity }) {
 	const groupRef = useRef<THREE.Group>(null!);

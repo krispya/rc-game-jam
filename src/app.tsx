@@ -9,6 +9,7 @@ import { ScoreTracker } from './components/score-tracker';
 import { FrameLoop } from './frameloop';
 import { Startup } from './startup';
 import { Stars } from '@react-three/drei';
+import { PostProcessing } from './components/postprcoessing';
 
 export function App() {
 	return (
@@ -31,6 +32,7 @@ export function App() {
 				<directionalLight position={[10.55754, 5.89323, 9.99894]} intensity={4.88} color={'#ffffff'} />
 
 				<Stars factor={10} radius={200} fade={false} />
+				<PostProcessing />
 			</Canvas>
 		</>
 	);
