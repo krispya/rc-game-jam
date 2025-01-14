@@ -9,10 +9,7 @@ export function moveEntities(world: World) {
 	const results = world.query(Transform, Movement);
 
 	// Update the data of each entity
-	results.updateEach(([transform, movement]) => {
-		const { position } = transform;
-		const { velocity, damping } = movement;
-
+	results.updateEach(([{ position }, { velocity, damping }]) => {
 		// Move the position by the velocity for a slice of time
 		position.x += velocity.x * delta;
 		position.y += velocity.y * delta;

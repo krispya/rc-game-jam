@@ -23,7 +23,8 @@ export function BulletView({ entity }: { entity: Entity }) {
 	);
 }
 
-const bulletColor = new THREE.Color('green').multiplyScalar(40);
+// const bulletColor = new THREE.Color('green').multiplyScalar(40);
+const bulletColor = new THREE.Color('lime');
 
 function HifiBulletView({ entity }: { entity: Entity }) {
 	const setInitial = useCallback(

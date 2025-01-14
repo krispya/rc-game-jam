@@ -4,7 +4,6 @@ import { EnemyRenderer } from './components/enemy-renderer';
 import { ExplosionRenderer } from './components/explosion-renderer';
 import { Nebula } from './components/nebula';
 import { PlayerRenderer } from './components/player-renderer';
-import { PostProcessing } from './components/postprcoessing';
 import { HifiScoreTracker } from './components/score-tracker';
 import { FrameLoop } from './frameloop';
 import { Startup } from './startup';
@@ -24,7 +23,7 @@ export function App() {
 			<directionalLight position={[10.41789, -5.97702, 10]} intensity={2.98} color={'#c31829'} />
 			<directionalLight position={[10.55754, 5.89323, 9.99894]} intensity={4.88} color={'#ffffff'} />
 
-			<PostProcessing />
+			{/* <PostProcessing /> */}
 			<Nebula speed={0.02} />
 
 			<HifiScoreTracker />
