@@ -10,11 +10,13 @@ import { FrameLoop } from './frameloop';
 import { Startup } from './startup';
 import { Stars } from '@react-three/drei';
 import { PostProcessing } from './components/postprcoessing';
+import { HealthTracker } from './components/health-tracker.tsx';
 
 export function App() {
 	return (
 		<>
 			<ScoreTracker />
+			<HealthTracker />
 			<GameOverText />
 
 			<Canvas>
