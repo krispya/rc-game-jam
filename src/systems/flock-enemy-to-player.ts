@@ -4,7 +4,7 @@ import { IsEnemy, Movement, IsPlayer, Transform, FollowPlayer } from '../traits'
 
 const acceleration = new THREE.Vector3();
 
-export const flockToPlayer = (world: World) => {
+export const flockEnemyToPlayer = (world: World) => {
 	const player = world.queryFirst(IsPlayer, Transform);
 	if (!player) return;
 

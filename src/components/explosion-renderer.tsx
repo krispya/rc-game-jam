@@ -3,7 +3,10 @@ import { Entity } from 'koota';
 import { useQuery } from 'koota/react';
 import { useCallback, useRef } from 'react';
 import * as THREE from 'three';
-import { Explosion, Transform, View } from '../traits';
+import { Explosion, Transform, Ref } from '../traits';
+
+const color = new THREE.Color(1, 0.5, 0).multiplyScalar(40);
+// const color = new THREE.Color(1, 0.5, 0);
 
 export function ExplosionView({ entity }: { entity: Entity }) {
 	const groupRef = useRef<THREE.Group>(null!);
@@ -12,7 +15,7 @@ export function ExplosionView({ entity }: { entity: Entity }) {
 	const setInitial = useCallback(
 		(group: THREE.Group | null) => {
 			if (!group) return;
-			entity.add(View(group));
+			entity.add(Ref(group));
 
 			// Set particle velocities with random offset
 			const velocities = entity.get(Explosion)!.velocities;
@@ -58,7 +61,7 @@ export function ExplosionView({ entity }: { entity: Entity }) {
 				return (
 					<mesh key={i}>
 						<sphereGeometry args={[0.18, 8, 8]} />
-						<meshBasicMaterial color={new THREE.Color(1, 0.5, 0).multiplyScalar(40)} transparent />
+						<meshBasicMaterial color={color} transparent />
 					</mesh>
 				);
 			})}

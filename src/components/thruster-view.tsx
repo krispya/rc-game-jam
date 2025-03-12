@@ -2,6 +2,9 @@ import { useFrame } from '@react-three/fiber';
 import { useRef } from 'react';
 import * as THREE from 'three';
 
+const color = new THREE.Color(1, 0.5, 0).multiplyScalar(40);
+// const color = new THREE.Color(1, 0.5, 0);
+
 export function ThrusterView({ position }: { position: [number, number, number] }) {
 	const meshRef = useRef<THREE.Mesh>(null);
 
@@ -17,7 +20,7 @@ export function ThrusterView({ position }: { position: [number, number, number] 
 		<group position={position} rotation={[0, 0, 3.14 / 2]}>
 			<mesh ref={meshRef}>
 				<coneGeometry args={[0.15, 1, 8]} />
-				<meshBasicMaterial color={new THREE.Color(1, 0.5, 0).multiplyScalar(40)} />
+				<meshBasicMaterial color={color} />
 			</mesh>
 		</group>
 	);

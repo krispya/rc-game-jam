@@ -2,13 +2,13 @@ import { Entity } from 'koota';
 import { useQuery } from 'koota/react';
 import { useCallback } from 'react';
 import * as THREE from 'three';
-import { Bullet, Transform, View } from '../traits';
+import { Bullet, Transform, Ref } from '../traits';
 
 export function BulletView({ entity }: { entity: Entity }) {
 	const setInitial = useCallback(
 		(group: THREE.Group | null) => {
 			if (!group) return;
-			entity.add(View(group));
+			entity.add(Ref(group));
 		},
 		[entity]
 	);
@@ -23,14 +23,14 @@ export function BulletView({ entity }: { entity: Entity }) {
 	);
 }
 
-// const bulletColor = new THREE.Color('green').multiplyScalar(40);
-const bulletColor = new THREE.Color('lime');
+const bulletColor = new THREE.Color('green').multiplyScalar(40);
+// const bulletColor = new THREE.Color('lime');
 
 function HifiBulletView({ entity }: { entity: Entity }) {
 	const setInitial = useCallback(
 		(group: THREE.Group | null) => {
 			if (!group) return;
-			entity.add(View(group));
+			entity.add(Ref(group));
 		},
 		[entity]
 	);

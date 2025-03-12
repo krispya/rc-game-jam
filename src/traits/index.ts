@@ -8,7 +8,10 @@ export * from './avoidant';
 export * from './explosion';
 export * from './spatial-hash-map';
 export * from './time';
-export * from './view';
-export * from './health'
+export * from './health';
 export * from './followPlayer';
 export * from './maxSpeed';
+export * from './ref';
+export * from './is-camera';
+export * from './auto-aim';
+export * from './shoot-at';
