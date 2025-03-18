@@ -1,6 +1,6 @@
 import { useGLTF } from '@react-three/drei';
 import { Entity } from 'koota';
-import { useQueryFirst, useTraitEffect } from 'koota/react';
+import { useQueryFirst, useTraitEffect, useWorld } from 'koota/react';
 import { useCallback, useLayoutEffect, useState } from 'react';
 import * as THREE from 'three';
 import src from '../assets/spacecraft.glb?url';
@@ -8,9 +8,11 @@ import { Input, IsPlayer, Transform, Ref } from '../traits';
 import { ThrusterView } from './thruster-view';
 
 export function PlayerView({ entity }: { entity: Entity }) {
+	const world = useWorld();
 	// A ref callback is used so that it runs before effects
 	const setInitial = useCallback(
 		(mesh: THREE.Mesh) => {
+			if (!world.has(entity)) return;
 			entity.add(Ref(mesh));
 			entity.set(Transform, {
 				position: mesh.position,
@@ -47,10 +49,10 @@ export function HifiPlayerView({ entity }: { entity: Entity }) {
 
 	// A ref callback is used so that it runs before effects
 	const setInitial = useCallback(
-		(group: THREE.Group | null) => {
-			// If the ref is null then it is being unmounted
-			if (!group) return;
+		(group: THREE.Group) => {
+			if (!entity.isAlive()) return;
 			entity.add(Ref(group));
+			return () => entity.remove(Ref);
 		},
 		[entity]
 	);

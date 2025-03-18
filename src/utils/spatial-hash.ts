@@ -1,49 +1,40 @@
 // Originally by Hendrik Mans: https://github.com/hmans/miniplex/blob/main/apps/demo/src/systems/SpatialHashingSystem.tsx
 
-import { Entity } from 'koota';
+type Cell<T> = Set<T>;
 
-type Cell = Set<Entity>;
-
-export class SpatialHashMap {
-	protected cells = new Map<string, Cell>();
-	protected entityToCell = new Map<Entity, Cell>();
+export class SpatialHashMap<T> {
+	protected cells = new Map<string, Cell<T>>();
+	protected itemToCell = new Map<T, Cell<T>>();
 
 	constructor(public cellSize: number) {}
 
-	setEntity(entity: Entity, x: number, y: number, z: number) {
+	set(item: T, x: number, y: number, z: number) {
 		const cell = this.getCell(x, y, z);
 
 		/* Remove from previous hash if known */
-		const oldCell = this.entityToCell.get(entity);
+		const oldCell = this.itemToCell.get(item);
 
 		if (oldCell) {
 			/* If hash didn't change, do nothing */
 			if (oldCell === cell) return;
 
 			/* Remove from previous hash */
-			oldCell.delete(entity);
+			oldCell.delete(item);
 		}
 
-		cell.add(entity);
-		this.entityToCell.set(entity, cell);
+		cell.add(item);
+		this.itemToCell.set(item, cell);
 	}
 
-	removeEntity(entity: Entity) {
-		const cell = this.entityToCell.get(entity);
-		cell?.delete(entity);
-		this.entityToCell.delete(entity);
+	remove(item: T) {
+		const cell = this.itemToCell.get(item);
+		cell?.delete(item);
+		this.itemToCell.delete(item);
 	}
 
-	getNearbyEntities(
-		x: number,
-		y: number,
-		z: number,
-		radius: number,
-		entities: Entity[] = [],
-		maxEntities = Infinity
-	) {
+	query(x: number, y: number, z: number, radius: number, items: T[] = [], maxItems = Infinity) {
 		let count = 0;
-		entities.length = 0;
+		items.length = 0;
 
 		// Calculate the cell coordinates that contain the sphere defined by radius
 		const minCellX = Math.floor((x - radius) / this.cellSize);
@@ -59,22 +50,22 @@ export class SpatialHashMap {
 				for (let cz = minCellZ; cz <= maxCellZ; cz++) {
 					const cell = this.getCell(cx * this.cellSize, cy * this.cellSize, cz * this.cellSize);
 
-					for (const entity of cell) {
-						entities.push(entity);
+					for (const item of cell) {
+						items.push(item);
 						count++;
 
-						if (count >= maxEntities) return entities;
+						if (count >= maxItems) return items;
 					}
 				}
 			}
 		}
 
-		return entities;
+		return items;
 	}
 
-	reset() {
+	clear() {
 		this.cells.clear();
-		this.entityToCell.clear();
+		this.itemToCell.clear();
 	}
 
 	protected getCell(x: number, y: number, z: number) {

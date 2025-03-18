@@ -15,3 +15,4 @@ export * from './ref';
 export * from './is-camera';
 export * from './auto-aim';
 export * from './shoot-at';
+export * from './is-dead';

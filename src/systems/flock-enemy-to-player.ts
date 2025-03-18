@@ -1,6 +1,6 @@
 import { World } from 'koota';
 import * as THREE from 'three';
-import { IsEnemy, Movement, IsPlayer, Transform, FollowPlayer } from '../traits';
+import { FollowPlayer, IsPlayer, Movement, Transform } from '../traits';
 
 const acceleration = new THREE.Vector3();
 

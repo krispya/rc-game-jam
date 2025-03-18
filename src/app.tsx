@@ -1,31 +1,25 @@
+import { Stars } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { BulletRenderer } from './components/bullet-renderer';
 import { CameraRenderer } from './components/camera-renderer';
 import { EnemyRenderer } from './components/enemy-renderer';
-import { ExplosionRenderer } from './components/explosion-renderer';
 import { GameOverText } from './components/game-over';
+import { HealthTracker } from './components/health-tracker.tsx';
 import { PlayerRenderer } from './components/player-renderer';
-import { ScoreTracker } from './components/score-tracker';
+import { PostProcessing } from './components/postprcoessing';
 import { FrameLoop } from './frameloop';
 import { Startup } from './startup';
-import { Stars } from '@react-three/drei';
-import { PostProcessing } from './components/postprcoessing';
-import { HealthTracker } from './components/health-tracker.tsx';
+import { ExplosionRenderer } from './components/explosion-renderer.tsx';
 
 export function App() {
 	return (
 		<>
-			<ScoreTracker />
+			{/* <ScoreTracker /> */}
 			<HealthTracker />
 			<GameOverText />
 
 			<Canvas>
-				<Startup
-					autoAimSpeed={100}
-					initialEnemies={100}
-					spawnRate={1000}
-					initialCameraPosition={[0, 0, 56]}
-				/>
+				<Startup autoAimSpeed={100} initialEnemies={50} spawnRate={500} initialCameraPosition={[0, 0, 56]} />
 				<FrameLoop />
 
 				<CameraRenderer />

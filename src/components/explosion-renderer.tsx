@@ -3,7 +3,7 @@ import { Entity } from 'koota';
 import { useQuery } from 'koota/react';
 import { useCallback, useRef } from 'react';
 import * as THREE from 'three';
-import { Explosion, Transform, Ref } from '../traits';
+import { Explosion, Ref, Transform } from '../traits';
 
 const color = new THREE.Color(1, 0.5, 0).multiplyScalar(40);
 // const color = new THREE.Color(1, 0.5, 0);
@@ -13,8 +13,8 @@ export function ExplosionView({ entity }: { entity: Entity }) {
 	const particleCount = entity.get(Explosion)!.count;
 
 	const setInitial = useCallback(
-		(group: THREE.Group | null) => {
-			if (!group) return;
+		(group: THREE.Group) => {
+			if (!entity.isAlive()) return;
 			entity.add(Ref(group));
 
 			// Set particle velocities with random offset
@@ -27,6 +27,8 @@ export function ExplosionView({ entity }: { entity: Entity }) {
 			}
 
 			groupRef.current = group;
+
+			return () => entity.remove(Ref);
 		},
 		[entity, particleCount]
 	);
@@ -71,12 +73,5 @@ export function ExplosionView({ entity }: { entity: Entity }) {
 
 export function ExplosionRenderer() {
 	const explosions = useQuery(Explosion, Transform);
-
-	return (
-		<>
-			{explosions.map((explosion) => (
-				<ExplosionView key={explosion.id()} entity={explosion} />
-			))}
-		</>
-	);
+	return explosions.map((explosion) => <ExplosionView key={explosion.id()} entity={explosion} />);
 }

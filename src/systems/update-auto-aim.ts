@@ -15,7 +15,7 @@ export function updateAutoAim(world: World) {
 			const { position } = entity.get(Transform)!;
 
 			const nearbyEntities = spatialHashMap
-				.getNearbyEntities(position.x, position.y, position.z, autoAim.radius)
+				.query(position.x, position.y, position.z, autoAim.radius)
 				.filter((e) => e.id() !== entity.id());
 
 			// Exit early if there are no nearby entities
