@@ -10,6 +10,7 @@ import { PostProcessing } from './components/postprcoessing';
 import { FrameLoop } from './frameloop';
 import { Startup } from './startup';
 import { ExplosionRenderer } from './components/explosion-renderer.tsx';
+import { SpatialHashDebug } from './components/spatial-hash-debug';
 
 export function App() {
 	return (
@@ -27,6 +28,7 @@ export function App() {
 				<EnemyRenderer />
 				<BulletRenderer />
 				<ExplosionRenderer />
+				<SpatialHashDebug />
 
 				<ambientLight intensity={1.02} />
 				<directionalLight position={[10.41789, -5.97702, 10]} intensity={2.98} color={'#c31829'} />

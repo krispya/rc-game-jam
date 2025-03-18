@@ -2,6 +2,24 @@
 
 type Cell<T> = Set<T>;
 
+/**
+ * Data for debugging and visualization of a single cell
+ */
+export type CellData = {
+	/** The cell's hash key (e.g. "0:0:0") */
+	key: string;
+	/** X position of the cell's corner in world space */
+	x: number;
+	/** Y position of the cell's corner in world space */
+	y: number;
+	/** Z position of the cell's corner in world space */
+	z: number;
+	/** Size of the cell (width, height, depth) */
+	size: number;
+	/** Number of items in this cell */
+	count: number;
+};
+
 export class SpatialHashMap<T> {
 	protected cells = new Map<string, Cell<T>>();
 	protected itemToCell = new Map<T, Cell<T>>();
@@ -11,14 +29,14 @@ export class SpatialHashMap<T> {
 	set(item: T, x: number, y: number, z: number) {
 		const cell = this.getCell(x, y, z);
 
-		/* Remove from previous hash if known */
+		// Remove from previous hash if known
 		const oldCell = this.itemToCell.get(item);
 
 		if (oldCell) {
-			/* If hash didn't change, do nothing */
+			// If hash didn't change, do nothing
 			if (oldCell === cell) return;
 
-			/* Remove from previous hash */
+			// Remove from previous hash
 			oldCell.delete(item);
 		}
 
@@ -61,6 +79,81 @@ export class SpatialHashMap<T> {
 		}
 
 		return items;
+	}
+
+	/**
+	 * Get data for all non-empty cells in the spatial hash map, useful for debug rendering
+	 * @param plane Optional plane to filter cells by ('xy', 'xz', 'yz')
+	 * @param planeValue Optional value for the fixed coordinate of the plane
+	 * @returns Array of cell data objects
+	 */
+	getCellData(plane?: 'xy' | 'xz' | 'yz', planeValue: number = 0): CellData[] {
+		const result: CellData[] = [];
+
+		for (const [hash, items] of this.cells.entries()) {
+			if (items.size === 0) continue;
+
+			// Parse hash to get cell coordinates
+			const [hx, hy, hz] = hash.split(':').map(Number);
+
+			// Calculate world position
+			const x = hx * this.cellSize;
+			const y = hy * this.cellSize;
+			const z = hz * this.cellSize;
+
+			// If plane is specified, only include cells on that plane
+			if (plane === 'xy' && Math.floor(z / this.cellSize) !== Math.floor(planeValue / this.cellSize))
+				continue;
+			if (plane === 'xz' && Math.floor(y / this.cellSize) !== Math.floor(planeValue / this.cellSize))
+				continue;
+			if (plane === 'yz' && Math.floor(x / this.cellSize) !== Math.floor(planeValue / this.cellSize))
+				continue;
+
+			result.push({
+				key: hash,
+				x,
+				y,
+				z,
+				size: this.cellSize,
+				count: items.size,
+			});
+		}
+
+		return result;
+	}
+
+	/**
+	 * Get the bounds of all non-empty cells
+	 * @returns The min and max coordinates of the occupied area
+	 */
+	getBounds() {
+		let minX = Infinity,
+			minY = Infinity,
+			minZ = Infinity;
+		let maxX = -Infinity,
+			maxY = -Infinity,
+			maxZ = -Infinity;
+
+		// If no cells, return default bounds
+		if (this.cells.size === 0) {
+			return { minX: 0, minY: 0, minZ: 0, maxX: 0, maxY: 0, maxZ: 0 };
+		}
+
+		for (const hash of this.cells.keys()) {
+			const [hx, hy, hz] = hash.split(':').map(Number);
+			const x = hx * this.cellSize;
+			const y = hy * this.cellSize;
+			const z = hz * this.cellSize;
+
+			minX = Math.min(minX, x);
+			minY = Math.min(minY, y);
+			minZ = Math.min(minZ, z);
+			maxX = Math.max(maxX, x + this.cellSize);
+			maxY = Math.max(maxY, y + this.cellSize);
+			maxZ = Math.max(maxZ, z + this.cellSize);
+		}
+
+		return { minX, minY, minZ, maxX, maxY, maxZ };
 	}
 
 	clear() {
