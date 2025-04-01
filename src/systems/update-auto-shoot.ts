@@ -1,7 +1,7 @@
 import { World } from 'koota';
-import { ShootAt, Transform } from '../traits';
-import { actions } from '../actions';
 import * as THREE from 'three';
+import { actions } from '../actions';
+import { ShootAt, Transform } from '../traits';
 
 const tempMatrix = new THREE.Matrix4();
 const rotation = new THREE.Euler(0, 0, 0);

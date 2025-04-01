@@ -1,9 +1,7 @@
-import { useFrame } from '@react-three/fiber';
 import { useActions, useWorld } from 'koota/react';
 import { useEffect } from 'react';
 import { actions } from './actions';
-import { updateSpatialHashing } from './systems/update-spatial-hashing';
-import { AutoAim, Movement } from './traits';
+import { AutoAim, Movement, SpatialHashMap } from './traits';
 
 export function Startup({
 	initialEnemies = 20,
@@ -16,7 +14,8 @@ export function Startup({
 	initialCameraPosition?: [number, number, number];
 	autoAimSpeed?: number;
 }) {
-	const { spawnPlayer, spawnEnemy, spawnCamera } = useActions(actions);
+	const { spawnPlayer, spawnEnemy, spawnCamera, destroyAll } = useActions(actions);
+	const world = useWorld();
 
 	useEffect(() => {
 		// Spawn camera
@@ -24,10 +23,9 @@ export function Startup({
 
 		// Spawn player
 		const player = spawnPlayer();
-		player.set(Movement, { thrust: 2 });
+		player.set(Movement, { thrust: 1 });
 		player.set(AutoAim, { cooldown: autoAimSpeed });
 
-		// Spawn 20 enemies to start
 		for (let i = 0; i < initialEnemies; i++) {
 			spawnEnemy();
 		}
@@ -35,16 +33,14 @@ export function Startup({
 		const enemySpawnInterval = setInterval(() => spawnEnemy(), spawnRate);
 
 		return () => {
-			player.destroy();
+			// Destroy all entities including the player
+			destroyAll();
+			// Clear the spatial hash
+			const spatialHashMap = world.get(SpatialHashMap);
+			if (spatialHashMap) spatialHashMap.clear();
 			clearInterval(enemySpawnInterval);
 		};
 	}, [spawnPlayer, spawnEnemy, spawnRate, initialEnemies, spawnCamera, initialCameraPosition, autoAimSpeed]);
-
-	const world = useWorld();
-
-	useFrame(() => {
-		updateSpatialHashing(world);
-	});
 
 	return null;
 }

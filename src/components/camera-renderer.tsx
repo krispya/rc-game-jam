@@ -1,14 +1,16 @@
-import { useQueryFirst } from 'koota/react';
+import { useQueryFirst, useWorld } from 'koota/react';
 import { IsCamera, Ref, Transform } from '../traits';
 import { PerspectiveCamera } from '@react-three/drei';
 import { Entity } from 'koota';
 import { ComponentRef, useCallback } from 'react';
 
 function CameraView({ entity }: { entity: Entity }) {
+	const world = useWorld();
 	const setInitial = useCallback(
-		(camera: ComponentRef<typeof PerspectiveCamera> | null) => {
-			if (!camera) return;
+		(camera: ComponentRef<typeof PerspectiveCamera>) => {
+			if (!world.has(entity)) return;
 			entity.add(Ref(camera));
+			return () => entity.remove(Ref);
 		},
 		[entity]
 	);

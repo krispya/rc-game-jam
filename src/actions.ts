@@ -46,6 +46,11 @@ export const actions = createActions((world) => ({
 	spawnCamera: (position: [number, number, number]) => {
 		return world.spawn(Transform({ position: new THREE.Vector3(...position) }), IsCamera);
 	},
+	destroyAll: () => {
+		world.query().forEach((entity) => {
+			entity.destroy();
+		});
+	},
 }));
 
 const spawnSlowEnemy = (world: World) => {

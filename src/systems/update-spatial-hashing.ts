@@ -1,18 +1,22 @@
-import { createRemoved, World } from 'koota';
-import { SpatialHashMap, Transform } from '../traits';
+import { createRemoved, Or, World } from 'koota';
+import { IsEnemy, IsPlayer, SpatialHashMap, Transform } from '../traits';
 
 const Removed = createRemoved();
 
 export const updateSpatialHashing = (world: World) => {
 	const spatialHashMap = world.get(SpatialHashMap);
 
-	// Add entities to the spatial hash map
-	world.query(Transform).updateEach(([{ position }], entity) => {
-		spatialHashMap!.setEntity(entity, position.x, position.y, position.z);
+	// Add players or enemies to the spatial hash map
+	world.query(Transform, Or(IsEnemy, IsPlayer)).updateEach(([{ position }], entity) => {
+		spatialHashMap!.set(entity, position.x, position.y, position.z);
 	});
 
-	// Remove entities from the spatial hash map
-	world.query(Removed(Transform)).forEach((entity) => {
-		spatialHashMap!.removeEntity(entity);
+	// Remove players or enemies from the spatial hash map
+	world.query(Removed(Transform, IsEnemy)).forEach((entity) => {
+		spatialHashMap!.remove(entity);
+	});
+
+	world.query(Removed(Transform, IsPlayer)).forEach((entity) => {
+		spatialHashMap!.remove(entity);
 	});
 };

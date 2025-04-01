@@ -8,7 +8,7 @@ export const avoidEachother = (world: World) => {
 	const spatialHashMap = world.get(SpatialHashMap)!;
 
 	world.query(Avoidant, Transform, Movement).updateEach(([avoidance, { position }, { velocity }]) => {
-		let neighbors = spatialHashMap.getNearbyEntities(
+		let neighbors = spatialHashMap.query(
 			position.x,
 			position.y,
 			position.z,

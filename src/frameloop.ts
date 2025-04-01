@@ -17,6 +17,8 @@ import { avoidEachother } from './systems/update-avoidance';
 import { updateBullets } from './systems/update-bullet';
 import { collideBulletsWithEnemies } from './systems/update-bullet-collisions';
 import { updateTime } from './systems/update-time';
+import { updateSpatialHashing } from './systems/update-spatial-hashing';
+import { takeOutTheDead } from './systems/take-out-the-dead';
 
 export function FrameLoop() {
 	const world = useWorld();
@@ -46,12 +48,14 @@ export function FrameLoop() {
 		updateBullets(world);
 		collideBulletsWithEnemies(world);
 
-		// Explosions
+		// Death
+		takeOutTheDead(world);
 		tickExplosion(world);
 
 		// Syncing
 		cameraFollowPlayer(world);
 		syncView(world);
+		updateSpatialHashing(world);
 	});
 
 	return null;

@@ -2,6 +2,7 @@ import '@fontsource/russo-one';
 import { useWorld } from 'koota/react';
 import { useEffect, useState } from 'react';
 import { IsEnemy } from '../traits';
+// @ts-expect-error - react-animated-counter is not typed
 import { AnimatedCounter } from 'react-animated-counter';
 
 export function ScoreTracker() {
