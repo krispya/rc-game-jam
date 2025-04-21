@@ -15,14 +15,14 @@ importers:
         specifier: ^10.0.3
         version: 10.0.6(@react-three/fiber@9.1.2(@types/react@19.1.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.170.0))(@types/react@19.1.2)(@types/three@0.170.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.170.0)
       '@react-three/fiber':
-        specifier: ^9.1.0
+        specifier: ^9.1.2
         version: 9.1.2(@types/react@19.1.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.170.0)
       '@react-three/postprocessing':
         specifier: ^3.0.4
         version: 3.0.4(@react-three/fiber@9.1.2(@types/react@19.1.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.170.0))(@types/three@0.170.0)(react@19.1.0)(three@0.170.0)
       koota:
-        specifier: ^0.2.3
-        version: 0.2.3(@types/react@19.1.2)(react@19.1.0)
+        specifier: ^0.4.0
+        version: 0.4.0(@types/react@19.1.2)(react@19.1.0)
       react:
         specifier: ^19.0.0
         version: 19.1.0
@@ -922,8 +922,8 @@ packages:
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
-  koota@0.2.3:
-    resolution: {integrity: sha512-s1g2x5T8wmmnBLsVbgLtpKptwcrIxAPJONS3V5zUUAG+MEQYP9DaR/h8PXF3h4aQTOBE2TeTODoLCqYX3M2nJA==}
+  koota@0.4.0:
+    resolution: {integrity: sha512-BGwO00OwOrjeQG1dyjs+Kdk8m07SApooSga7tU1c5Wl/kcO496XyFikYMr60EPyDxXToI8HR7j5uz2sPMccBSQ==}
     peerDependencies:
       '@types/react': '>=18.0.0'
       react: '>=18.0.0'
@@ -2088,7 +2088,7 @@ snapshots:
     dependencies:
       json-buffer: 3.0.1
 
-  koota@0.2.3(@types/react@19.1.2)(react@19.1.0):
+  koota@0.4.0(@types/react@19.1.2)(react@19.1.0):
     optionalDependencies:
       '@types/react': 19.1.2
       react: 19.1.0
